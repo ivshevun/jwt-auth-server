@@ -1,8 +1,9 @@
 import { CreateUserDto, UserDto } from '@/dtos'
 import { ApiError } from '@/exceptions'
+import { User } from '@/interfaces'
+import { UserModel } from '@/models'
 import * as argon from 'argon2'
 import * as uuid from 'uuid'
-import { prisma } from '../utils'
 import { mailService, tokenService } from './'
 
 class UserService {
@@ -26,17 +27,15 @@ class UserService {
         const hashedPassword = await argon.hash(password)
         const activationLink = uuid.v4()
 
-        return prisma.user.create({
-            data: {
-                email,
-                hashedPassword,
-                activationLink,
-            },
+        return UserModel.create({
+            email,
+            hashedPassword,
+            activationLink,
         })
     }
 
-    getUserByEmail(email: string) {
-        return prisma.user.findUnique({ where: { email } })
+    getUserByEmail(email: string): Promise<User | null> {
+        return UserModel.findOne({ email }).exec()
     }
 }
 

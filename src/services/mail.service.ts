@@ -1,8 +1,9 @@
-import { User } from '@prisma/client'
+import { User } from '@/interfaces'
 
 class MailService {
-    async sendActivationMail(user: User) {
-        const { email, activationLink } = user
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async sendActivationMail(_user: User) {
+        // const { email, activationLink } = user
     }
 }
 

@@ -5,9 +5,10 @@ export const errorMiddleware = (
     err: Error,
     _req: Request,
     res: Response,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _next: NextFunction
 ) => {
-    console.log({ err })
+    console.log({ name: err.name, message: err.message })
 
     if (err instanceof ApiError) {
         return res

@@ -1,5 +1,5 @@
 import { UserDto } from '@/dtos'
-import { prisma } from '@/utils'
+import { TokenModel } from '@/models'
 import 'dotenv/config'
 import { Response } from 'express'
 import jwt from 'jsonwebtoken'
@@ -47,25 +47,18 @@ class TokenService {
     }
 
     createToken(userId: string, refreshToken: string) {
-        return prisma.token.create({
-            data: {
-                userId,
-                refreshToken,
-            },
+        return TokenModel.create({
+            userId,
+            refreshToken,
         })
     }
 
     updateRefreshTokenByUserId(userId: string, refreshToken: string) {
-        return prisma.token.update({
-            where: { userId },
-            data: {
-                refreshToken,
-            },
-        })
+        return TokenModel.findOneAndUpdate({ userId }, { refreshToken })
     }
 
     getTokenDataByUserId(userId: string) {
-        return prisma.token.findUnique({ where: { userId } })
+        return TokenModel.findOne({ userId })
     }
 }
 

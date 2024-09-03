@@ -4,5 +4,9 @@ export default {
     transform: {
         '^.+.tsx?$': ['ts-jest', {}],
     },
-    modulePathIgnorePatterns: ['dist'],
+    moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/src/$1',
+    },
+    testMatch: ['**/**/*.spec.ts'],
+    forceExit: true,
 }

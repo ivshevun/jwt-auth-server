@@ -1,4 +1,4 @@
-import { User } from '@prisma/client'
+import { User } from '@/interfaces'
 
 export class UserDto {
     id: string
@@ -6,7 +6,7 @@ export class UserDto {
     isActivated: boolean
 
     constructor(user: User) {
-        this.id = user.id
+        this.id = user._id.toString()
         this.email = user.email
         this.isActivated = user.isActivated
     }
