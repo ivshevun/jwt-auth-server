@@ -1,8 +1,9 @@
 import { UserDto } from '@/dtos'
+import { Token } from '@/interfaces'
 import { TokenModel } from '@/models'
 import 'dotenv/config'
 import { Response } from 'express'
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import ms from 'ms'
 
 class TokenService {
@@ -23,6 +24,10 @@ class TokenService {
         const token = await this.createToken(userId, refreshToken)
 
         return token
+    }
+
+    async removeTokenFromDb(refreshToken: string) {
+        return await TokenModel.deleteOne({ refreshToken })
     }
 
     saveRefreshTokenToCookie(refreshToken: string, res: Response) {
@@ -46,6 +51,26 @@ class TokenService {
         })
     }
 
+    validateAccessToken(token: string) {
+        try {
+            const user = jwt.verify(token, process.env.JWT_ACCESS_SECRET!)
+
+            return user
+        } catch {
+            return null
+        }
+    }
+
+    validateRefreshToken(token: string): JwtPayload | null {
+        try {
+            const user = jwt.verify(token, process.env.JWT_REFRESH_SECRET!)
+
+            return user as JwtPayload
+        } catch {
+            return null
+        }
+    }
+
     createToken(userId: string, refreshToken: string) {
         return TokenModel.create({
             userId,
@@ -57,8 +82,16 @@ class TokenService {
         return TokenModel.findOneAndUpdate({ userId }, { refreshToken })
     }
 
-    getTokenDataByUserId(userId: string) {
-        return TokenModel.findOne({ userId })
+    async getTokenDataByUserId(userId: string): Promise<Token | null> {
+        return await TokenModel.findOne({ userId })
+    }
+
+    getTokenById(id: string) {
+        return TokenModel.findById(id)
+    }
+
+    getTokenByRefreshToken(refreshToken: string) {
+        return TokenModel.findOne({ refreshToken })
     }
 }
 

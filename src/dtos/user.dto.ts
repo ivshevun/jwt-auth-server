@@ -6,6 +6,8 @@ export class UserDto {
     isActivated: boolean
 
     constructor(user: User) {
+        console.log({ user })
+
         this.id = user._id.toString()
         this.email = user.email
         this.isActivated = user.isActivated

@@ -29,7 +29,7 @@ describe('App e2e', () => {
                     .spec()
                     .post('/register')
                     .withBody({
-                        email: '0iXZj@example.com',
+                        email: 'sevcenkoivan673@gmail.com',
                         password: '12345678',
                     })
                     .expectStatus(201)
