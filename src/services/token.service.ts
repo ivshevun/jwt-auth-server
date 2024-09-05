@@ -86,12 +86,16 @@ class TokenService {
         return await TokenModel.findOne({ userId })
     }
 
-    getTokenById(id: string) {
+    getTokenById(id: string): Promise<Token | null> {
         return TokenModel.findById(id)
     }
 
-    getTokenByRefreshToken(refreshToken: string) {
+    getTokenByRefreshToken(refreshToken: string): Promise<Token | null> {
         return TokenModel.findOne({ refreshToken })
+    }
+
+    async removeTokenByUserId(userId: string): Promise<Token | null> {
+        return await TokenModel.findOneAndDelete({ userId })
     }
 }
 

@@ -41,6 +41,9 @@ class UserService {
 
         const userDto = new UserDto(userInDb)
 
+        // Delete old token from db
+        await tokenService.removeTokenByUserId(userDto.id)
+
         const tokens = tokenService.generateTokens(userDto)
 
         await tokenService.saveToken(userDto.id, tokens.refreshToken)
