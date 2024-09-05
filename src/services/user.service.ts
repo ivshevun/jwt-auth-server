@@ -105,6 +105,10 @@ class UserService {
         })
     }
 
+    async getAllUsers(): Promise<User[]> {
+        return await UserModel.find()
+    }
+
     getUserByEmail(email: string): Promise<User | null> {
         return UserModel.findOne({ email }).exec()
     }
